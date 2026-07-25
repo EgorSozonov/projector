@@ -8,20 +8,37 @@ if [[ -z "$app" || -z "$vers" ]]; then
    exit 1
 fi
 
-#git checkout "$vers" || { echo "Cannot checkout version $vers!"; exit 1; }
+original="$(pwd)"
+dest="$tarballDir/${app}-$vers"
 
-dest=$tarballDir/$app
+rm -rf $dest
+mkdir -p $dest
 
-#program to replace "source" and "sha256sums" values in the PKGBUILD
-read -r -d '' awkProgram <<EOF
+theTarball=$dest/tarball.tar
+git -c core.abbrev=no -C "$pwd" archive --format tar "$vers" > $theTarball
+
+checksum=$(sha256sum $theTarball | awk '{print $1}')
+
+#AWK programs to replace checksum etc in the PKGBUILD
+read -r -d '' localSourceSubst <<EOF
 { 
-gsub(/source=\([^)]+\)/, "source=(\"leRepo::git+file://$(pwd)#tag=$vers\")"); 
+gsub(/source=\([^)]+\)/, "source=(tarball.tar)"); 
 gsub(/pkgver=_/, "pkgver=$vers"); 
+gsub(/sha256sums=\([^)]+\)/, "sha256sums=('$checksum')"); 
 }1
 EOF
 
-awk -v RS='^$' -v ORS='' "$awkProgram" builddeps/PKGBUILD > $dest/PKGBUILD
+read -r -d '' globalSourceSubst <<EOF
+{ 
+gsub(/pkgver=_/, "pkgver=$vers"); 
+gsub(/sha256sums=\([^)]+\)/, "sha256sums=('$checksum')"); 
+}1
+EOF
 
-(cd $dest && makepkg && echo "Version $vers Arch package built in dir $dest" \
+awk -v RS='^$' -v ORS='' "$localSourceSubst" builddeps/PKGBUILD > $dest/PKGBUILD
+
+(cd $dest && makepkg \
+   && /usr/bin/rm tarball.tar \
+   && awk -v RS='^$' -v ORS='' "$globalSourceSubst" $original/builddeps/PKGBUILD > $(pwd)/PKGBUILD \
+   && echo "Version $vers Arch package built in $(pwd)" \
    || echo "ERROR")
-#   && /usr/bin/rm $dest/PKGBUILD \

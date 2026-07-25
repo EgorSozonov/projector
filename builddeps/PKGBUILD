@@ -11,8 +11,7 @@ url='https://github.com/EgorSozonov/projector'
 license=(BSD-3-Clause)
 depends=(glibc) 
 makedepends=(git)
-source=(https://github.com
-   /EgorSozonov/projector)
+source=(git+https://github.com/EgorSozonov/projector#tag=$pkgver)
 options=(!debug !strip)
 sha256sums=('SKIP')
 
@@ -21,6 +20,6 @@ build() {
 }
 
 package() {
-   install -D projector "$pkgdir/usr/bin"
+   install -D projector "$pkgdir/usr/bin/projector"
 }
 

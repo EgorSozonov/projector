@@ -33,12 +33,11 @@ WARN=-Werror=return-type -Wunused-variable -Wshadow -Wfatal-errors \
     -Wno-discarded-qualifiers \
     -Werror=int-conversion -fstrict-flex-arrays=3
 SANITIZE=-fsanitize=address # include it occasionally
-INCLUDES=-iquote .
 OPT=-march=native
 
 APP=projector
 
-RELEASE_FLAGS = $(WARN) $(OPT) $(INCLUDES) -O2
+RELEASE_FLAGS = $(WARN) $(OPT) -O2
 COMPILE = $(CC) $(RELEASE_FLAGS) -gdwarf-5
 
 EXE=$(BIN)/$(APP)
@@ -68,7 +67,6 @@ install: ##Copy it into a location for runnable binaries
 
 
 package: ##Create a package for Arch linux by building a specific version
-/ make dist
 / builddeps/packageForArch.sh projector $(VERSION) $(OBJDIR)
 
 #}}}
