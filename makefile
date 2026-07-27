@@ -40,8 +40,6 @@ APP=projector
 RELEASE_FLAGS = $(WARN) $(OPT) -O2
 COMPILE = $(CC) $(RELEASE_FLAGS) -gdwarf-5
 
-EXE=$(BIN)/$(APP)
-
 #}}}
 #{{{ Commands
 
@@ -52,8 +50,8 @@ $(OBJDIR)/$(APP):
 / mkdir -p $(OBJDIR)/$(APP)
 
 all: | $(BIN) ##Build the program
-/ clear
-/ $(COMPILE) -o $(EXE) $(APP).c 
+#/ clear
+/ $(COMPILE) -o $(BIN)/$(APP) $(APP).c 
 / @echo "_________________________________________"
 / @echo "|            BUILD SUCCESS              |"
 / @echo "========================================="
@@ -63,10 +61,11 @@ dist: | $(OBJDIR)/$(APP) ##Create a tarball with the source code
 / tar --exclude .git -c projector.c makefile -f $(OBJDIR)/$(APP)/$(APP)-$(VERSION).tar.gz
 
 install: ##Copy it into a location for runnable binaries
-/ install -D $(BIN)/$(APP) $(DESTDIR)/$(prefix)
+/ mkdir -p $(DESTDIR)/$(PREFIX)/bin
+/ install -D $(BIN)/$(APP) $(DESTDIR)/$(PREFIX)/bin
 
 
 package: ##Create a package for Arch linux by building a specific version
-/ builddeps/packageForArch.sh projector $(VERSION) $(OBJDIR)
+/ builddeps/packageForDebian.sh projector $(VERSION) $(OBJDIR)
 
 #}}}
