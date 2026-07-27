@@ -2,7 +2,7 @@ Package: projector
 Version: 1.0.0
 Architecture: amd64
 Maintainer: onr <onr@localhost>
-Installed-Size: 27
+Installed-Size: 8
 Depends: libc6 (>= 2.0)
 Section: unknown
 Priority: optional

@@ -7,33 +7,45 @@ if [[ -z "$app" || -z "$vers" ]]; then
    exit 1
 fi
 
+export APP=$1
+export VERSION=$2
 origPath=$(pwd)
-dest=$(realpath "$HOME/toys/$app")
+export DEST="$HOME/toys/$APP"
 
-temp=$(mktemp -d)
+export TEMP=$(mktemp -d)
 cleanup() {
-   rm -rf "$temp"
+   rm -rf "$TEMP"
 }
-mkdir -p $temp
-#trap cleanup EXIT
+mkdir -p $TEMP
+trap cleanup EXIT
 
 
 #Make a dir with the source tarball and the debian/ subdir
-cp -r $origPath/debian $temp
-pref=${PREFIX:-"usr"}
-sed -i "s|usr/|$app $pref/|" $temp/debian/install
-cd $temp
-dpkg-source -b "$origPath" 
+cp -r $origPath/debian $TEMP
+if [[ -z "$PREFIX" ]]; then
+    export PREFIX="usr"
+fi
+echo $PREFIX
+export DESTDIR="$TEMP/debian/$app"
 
-artifact="${app}_${vers}_amd64"
+echo $TEMP/debian/rules
+
 
 #Actually build the artifact
-BIN=. DH_OPTIONS="--destdir=$temp" \
+artifact="${APP}_${VERSION}_amd64"
+BIN="$TEMP" DH_OPTIONS="--destdir=$DESTDIR" \
 dpkg-buildpackage -b -us -uc \
-   --buildinfo-option=-O"$temp/$artifact.buildinfo"  --buildinfo-option=-u"$temp" \
-   --changes-option=-u"$temp" --changes-option=-O"$temp/$artifact.changes" 
+   --buildinfo-file="$TEMP/$artifact.buildinfo"  --buildinfo-option=-u"$TEMP" \
+   --changes-option=-u"$TEMP" --changes-file="$TEMP/$artifact.changes" 
+   
+#Actually build the artifact
+#BIN=. DH_OPTIONS="--destdir=$TEMP" \
+#dpkg-buildpackage -b -us -uc \
+#   --buildinfo-file="$TEMP/$artifact.buildinfo"  --buildinfo-option=-u"$TEMP" \
+#   --changes-option=-u"$TEMP" --changes-file="$TEMP/$artifact.changes" 
+   
 
 #Copy the artifact to end directory
-mkdir -p $dest
-cp $temp/$artifact.deb $dest/$artifact.deb
+mkdir -p $DEST
+cp $TEMP/$artifact.deb $DEST/$artifact.deb
 

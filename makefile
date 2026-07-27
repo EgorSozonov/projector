@@ -55,6 +55,7 @@ all: | $(BIN) ##Build the program
 / @echo "_________________________________________"
 / @echo "|            BUILD SUCCESS              |"
 / @echo "========================================="
+/ @echo "Built in $(BIN)"
 
 
 dist: | $(OBJDIR)/$(APP) ##Create a tarball with the source code
@@ -62,7 +63,10 @@ dist: | $(OBJDIR)/$(APP) ##Create a tarball with the source code
 
 install: ##Copy it into a location for runnable binaries
 / mkdir -p $(DESTDIR)/$(PREFIX)/bin
-/ install -D $(BIN)/$(APP) $(DESTDIR)/$(PREFIX)/bin
+/ @echo "DESTDIR=$(DESTDIR)"
+/ @echo "PREFIX=$(PREFIX)"
+/ install -D $(BIN)/$(APP) $(DESTDIR)/$(PREFIX)/bin/$(APP)
+#/ /usr/bin/rm $(BIN)/$(APP)
 
 
 package: ##Create a package for Arch linux by building a specific version
