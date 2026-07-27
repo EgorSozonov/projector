@@ -1,4 +1,5 @@
 debian/.debhelper/*
+debian/files/*
 debian/projector/*
 debian/projector/**
 debian/projector.substvars
