@@ -50,12 +50,11 @@ $(OBJDIR)/$(APP):
 / mkdir -p $(OBJDIR)/$(APP)
 
 all: | $(BIN) ##Build the program
-#/ clear
+/ clear
 / $(COMPILE) -o $(BIN)/$(APP) $(APP).c 
 / @echo "_________________________________________"
 / @echo "|            BUILD SUCCESS              |"
 / @echo "========================================="
-/ @echo "Built in $(BIN)"
 
 
 dist: | $(OBJDIR)/$(APP) ##Create a tarball with the source code
@@ -66,7 +65,6 @@ install: ##Copy it into a location for runnable binaries
 / @echo "DESTDIR=$(DESTDIR)"
 / @echo "PREFIX=$(PREFIX)"
 / install -D $(BIN)/$(APP) $(DESTDIR)/$(PREFIX)/bin/$(APP)
-#/ /usr/bin/rm $(BIN)/$(APP)
 
 
 package: ##Create a package for Arch linux by building a specific version
