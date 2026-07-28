@@ -11,13 +11,13 @@ override_dh_auto_build:
 
 override_dh_auto_install:
 #/ dh_auto_install --destdir=$(TEMP)/debian/$(APP)/$(PREFIX)/bin
-/ make install
+/ DESTDIR=$(TEMP)/a/debian/$(APP) make install
 
 override_dh_builddeb:
-/ chmod 755 $(TEMP)/debian
-/ chmod 755 $(TEMP)/debian/$(APP)
-/ chmod 755 $(TEMP)/debian/$(APP)/DEBIAN
-/ dpkg-deb -b "$(TEMP)/debian/$(APP)" $(TEMP)/$(APP)_$(VERSION)_amd64.deb
+#/ chmod 755 $(TEMP)/debian
+#/ chmod 755 $(TEMP)/debian/$(APP)
+#/ chmod 755 $(TEMP)/debian/$(APP)/DEBIAN
+/ dpkg-deb -b "$(TEMP)/a/debian/$(APP)" $(TEMP)/$(APP)_$(VERSION)_amd64.deb
 
 override_dh_install:
 

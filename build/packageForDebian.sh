@@ -10,40 +10,37 @@ fi
 export APP=$1
 export VERSION=$2
 origPath=$(pwd)
-export DEST="../.b/$APP"
-
+if [[ -z "$DEST" ]]; then
+    export DEST="../.b/$APP"
+fi
+if [[ -z "$PREFIX" ]]; then
+    export PREFIX="usr"
+fi
 
 export TEMP=$(mktemp -d)
 cleanup() {
    rm -rf "$TEMP"
 }
-mkdir -p $TEMP
-#trap cleanup EXIT
+mkdir -p $TEMP/a
+trap cleanup EXIT
 
 
-git -c core.abbrev=no -C "$origPath" archive --format tar "$vers" > $TEMP/${APP}_$VERSION.orig.tar.gz
+#Make a copy of the source at this particular version and move the debian/ subdir to top
+git -c core.abbrev=no -C "$origPath" archive --format tar "$vers" \
+   > $TEMP/${APP}_$VERSION.orig.tar.gz
 cd $TEMP
-tar -x -f $TEMP/${APP}_$VERSION.orig.tar.gz
-
-
-
-#Make a dir with the source tarball and the debian/ subdir
-#cp -r $origPath/debian $TEMP
-#if [[ -z "$PREFIX" ]]; then
-#    export PREFIX="usr"
-#fi
-#export DESTDIR="$TEMP/debian/$app"
+tar -x -f $TEMP/${APP}_$VERSION.orig.tar.gz --directory a
+cd a
+mv build/debian .
 
 
 #Actually build the artifact
-#artifact="${APP}_${VERSION}_amd64"
-#BIN="$TEMP" DH_OPTIONS="--destdir=$DESTDIR" \
-#dpkg-buildpackage -b -us -uc \
-#   --buildinfo-file="$TEMP/$artifact.buildinfo"  --buildinfo-option=-u"$TEMP" \
-#   --changes-option=-u"$TEMP" --changes-file="$TEMP/$artifact.changes" 
-#   
-#
+artifact="${APP}_${VERSION}_amd64"
+BIN="." DEB_BUILD_OPTIONS=noautodbgsym \
+dpkg-buildpackage -b -us -uc --buildinfo-option=-O
+
+
 ##Copy the artifact to destination directory
-#mkdir -p $DEST
-#cp $TEMP/$artifact.deb $DEST/$artifact.deb
+mkdir -p $DEST
+cp $TEMP/$artifact.deb $DEST/$artifact.deb
 
