@@ -1,3 +1,11 @@
+
+projector (1.1.2) UNRELEASED; urgency=low
+
+  * Removed extra license
+  * Removed extra cruft in build/debian/rules
+    <nnnn is the bug number of your ITP>
+
+ -- onr <onr@localhost>  Sun, 26 Jul 2026 13:55:49 +0300
 projector (1.1.1) UNRELEASED; urgency=low
 
   * Initial release. Closes: #nnnn
