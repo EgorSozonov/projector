@@ -38,7 +38,11 @@ OPT=-march=native
 APP=projector
 
 RELEASE_FLAGS = $(WARN) $(OPT) -O2
-COMPILE = $(CC) $(RELEASE_FLAGS) -gdwarf-5
+COMPILE = $(CC) $(RELEASE_FLAGS) -gdwarf-5 \
+   -static-pie -nostdinc \
+   -I/usr/lib/musl/include \
+   -B/usr/lib/musl/lib \
+   -lgcc
 
 #}}}
 #{{{ Commands
@@ -58,7 +62,7 @@ all: | $(BIN) ##Build the program
 
 
 dist: | $(OBJDIR)/$(APP) ##Create a tarball with the source code
-/ tar --exclude .git -c projector.c makefile -f $(OBJDIR)/$(APP)/$(APP)-$(VERSION).tar.gz
+/ tar --exclude .git -c projector.c makefile -f $(OBJDIR)/$(APP)/$(APP).tar.gz
 
 install: ##Copy it into a location for runnable binaries
 / mkdir -p $(DESTDIR)/$(PREFIX)/bin
