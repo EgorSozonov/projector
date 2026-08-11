@@ -1,11 +1,10 @@
 # Maintainer: Egor Sozonov
 # Contributor: Egor Sozonov
 
-pkgbase=projector
-pkgname=(projector)
+pkgname=(projer)
 pkgver=_
 pkgrel=1
-pkgdesc='Project generation tool' 
+pkgdesc='Project generation tool (from templates)' 
 arch=(x86_64)
 url='https://github.com/EgorSozonov/projector'
 license=(BSD-3-Clause)
@@ -20,6 +19,6 @@ build() {
 }
 
 package() {
-   install -D projector "$pkgdir/usr/bin/projector"
+   install -D projer "$pkgdir/usr/bin/projer"
 }
 
