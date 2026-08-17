@@ -423,7 +423,7 @@ printTemplates(Text configDir, char* subdir) {
    Text dirn = concatDirAndSub(configDir, subdir, a);
    DIR *dir = opendir(dirn.c);
    if (!dir) {
-      print("Subdir %s doesn't exist in ~/.config/projector", subdir);
+      print("Subdir %s doesn't exist in ~/.config/projer", subdir);
       return;
    }
    
@@ -757,8 +757,9 @@ Text errMsg = empty;
 
 private void //:printHelp
 printHelp() {
-   print("Tool to initialize projects from templates. Usage:\n\n"
-      "> projector --name project java/basic\n\n"
+   print("PROJER >>>\n\n"
+      "Tool to initialize projects from templates. Usage:\n\n"
+      "> projer --name project java/basic\n\n"
       "Creates a project in folder \"./project\" according to template in ~/.config/java/basic.proj"
       "\n\nOther options:\n"
       "-h    print this help\n"
@@ -867,10 +868,10 @@ private Text
 getConfigDir(Arena* a) {
    char const* homeDir = getenv("HOME");
    Int homeDirLen = strlen(homeDir);
-   Int configDirLen = homeDirLen + 18; // 18 = len of `/.config/projector`
+   Int configDirLen = homeDirLen + 15; // 15 = len of `/.config/projer`
    char* const configDir = allocateOnArena(configDirLen + 1, a);
    memcpy(configDir, homeDir, homeDirLen);
-   memcpy(configDir + homeDirLen, "/.config/projector", 18);
+   memcpy(configDir + homeDirLen, "/.config/projer", 15);
    configDir[configDirLen] = '\0';
    return (Text){.c = configDir, .len = configDirLen};
 }
@@ -886,10 +887,10 @@ void run(TaskDescription task) {
       break;
    }
    case (whatToDoPrintTemplateDirs): {
-      print("Available template directories in ~/.config/projector:");
+      print("Available template directories in ~/.config/projer:");
       printf("\n");
       printSubDirs(task.configDir);
-      print("\nOr run projector -h to get help");
+      print("\nOr run projer -h to get help");
       break;
    }
    case (whatToDoInitProject): {
