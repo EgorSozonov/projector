@@ -480,6 +480,7 @@ DEFINE_LIST(CreateFile)
 
 typedef enum { //:WhatToDo
    whatToDoPrintHelp,
+   whatToDoPrintVersion,
    whatToDoPrintTemplateDirs,
    whatToDoPrintTemplates,
    whatToDoInitProject
@@ -826,6 +827,9 @@ getCommandParams(int argc, char** argv, Arena* a) {
             if (arg.c[1] == 'h') {
                task.whatToDo = whatToDoPrintHelp;
                goto finish;
+            } ei (arg.c[1] == 'v') {
+               task.whatToDo = whatToDoPrintVersion;
+               goto finish;
             }
          } ei (arg.c[1] == '-') {
             add(commandLineVar(j, argc, argv, a), task.vars);
@@ -878,24 +882,28 @@ getConfigDir(Arena* a) {
 
 void run(TaskDescription task) {
    switch (task.whatToDo) {
-   case (whatToDoPrintHelp): {
-      printHelp();
-      break;
-   }
-   case (whatToDoPrintTemplates): {
+   case whatToDoPrintTemplates: {
       printTemplates(task.configDir, task.inputFilename.c);
       break;
    }
-   case (whatToDoPrintTemplateDirs): {
+   case whatToDoPrintTemplateDirs: {
       print("Available template directories in ~/.config/projer:");
       printf("\n");
       printSubDirs(task.configDir);
       print("\nOr run projer -h to get help");
       break;
    }
-   case (whatToDoInitProject): {
+   case whatToDoInitProject: {
       tryReadTemplate(task);
       print("Project scaffolding generated");
+      break;
+   }
+   case whatToDoPrintVersion: {
+      print("1.3.0");
+      break;
+   }
+   case whatToDoPrintHelp: {
+      printHelp();
       break;
    }
    }
@@ -904,7 +912,6 @@ void run(TaskDescription task) {
 int main(int argc, char** argv) {
    Arena* a = createArena();
    if (setjmp(excBuf) == 0) {
-
       TaskDescription task = getCommandParams(argc, argv, a);
       task.configDir = getConfigDir(a);
       if (task.errMsg.len > 0) {
