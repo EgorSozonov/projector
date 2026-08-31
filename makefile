@@ -27,6 +27,7 @@ LDFLAGS ?= -Wl,--exclude-libs=ALL
 
 BIN ?= ../bin
 OBJDIR ?= ../.b
+PREFIX ?= /usr
 WARN=-Werror=return-type -Wunused-variable -Wshadow -Wfatal-errors \
     -Werror=implicit-function-declaration -Werror=incompatible-pointer-types \
     -Wno-discarded-qualifiers \
@@ -69,8 +70,11 @@ install: ##Copy it into a location for runnable binaries
 / @echo "PREFIX=$(PREFIX)"
 / install -D $(BIN)/$(APP) $(DESTDIR)/$(PREFIX)/bin/$(APP)
 
+uninstall: ##Delete all installed files
+/ /usr/bin/rm $(DESTDIR)/$(PREFIX)/bin/$(APP)
+
 
 package: ##Create a package for Arch Linux by building a specific version
-/ build/package.sh $(APP) $(OBJDIR) $(VERSION)
+/ package/package.sh $(APP) $(OBJDIR) $(VERSION)
 
 #}}}

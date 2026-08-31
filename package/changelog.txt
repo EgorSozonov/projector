@@ -1,0 +1,5 @@
+2026-08-31 Egor Sozonov
+    * version 1
+    * Basic featureset
+    * Added this changelog
+    

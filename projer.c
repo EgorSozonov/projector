@@ -899,7 +899,7 @@ void run(TaskDescription task) {
       break;
    }
    case whatToDoPrintVersion: {
-      print("1.3.0");
+      print("1");
       break;
    }
    case whatToDoPrintHelp: {
