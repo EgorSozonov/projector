@@ -1,7 +1,7 @@
 # Maintainer: Egor Sozonov
 # Contributor: Egor Sozonov
 
-pkgname=(projer)
+pkgname=projer
 pkgver=_
 pkgrel=1
 pkgdesc='Project generation tool (from templates)' 
@@ -16,11 +16,12 @@ sha256sums=('SKIP')
 changelog=changelog.txt
 
 build() {
-   BIN=. make 
+   echo "srcdir $srcdir"
+   make BIN="$srcdir/bin" PREFIX=/usr
 }
 
 check() {
-   local exeVersion="$(projer -v)"
+   local exeVersion="$($srcdir/bin/$pkgname -v)"
    if [[ "$exeVersion" != "$pkgver" ]]; then
       error "The program has version $exeVersion but the package's version = $pkgver"
       exit 1
@@ -28,6 +29,6 @@ check() {
 }
 
 package() {
-   install -D projer "$pkgdir/usr/bin/projer"
+   make install OBJDIR="$pkgdir" DESTDIR="$pkgdir" #-D bin/$pkgname "$pkgdir/usr/bin/$pkgname"
 }
 

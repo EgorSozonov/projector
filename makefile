@@ -26,7 +26,7 @@ CC ?= gcc --std=c2x
 LDFLAGS ?= -Wl,--exclude-libs=ALL
 
 BIN ?= ../bin
-OBJDIR ?= ../.b
+OBJDIR ?= $(BIN)/../.b
 PREFIX ?= /usr
 WARN=-Werror=return-type -Wunused-variable -Wshadow -Wfatal-errors \
     -Werror=implicit-function-declaration -Werror=incompatible-pointer-types \
@@ -54,7 +54,7 @@ $(OBJDIR)/$(APP):
 / mkdir -p $(OBJDIR)/$(APP)
 
 all: | $(BIN) ##Build the program
-/ clear
+#/ clear
 / $(COMPILE) -o $(BIN)/$(APP) $(APP).c 
 / @echo "_________________________________________"
 / @echo "|            BUILD SUCCESS              |"
