@@ -33,12 +33,12 @@ WARN=-Werror=return-type -Wunused-variable -Wshadow -Wfatal-errors \
     -Wno-discarded-qualifiers \
     -Werror=int-conversion -fstrict-flex-arrays=3
 SANITIZE=-fsanitize=address # include it occasionally
-OPT=-march=native
+CFLAGS ?= -O2 -march=native
 
 APP=projer
 
-RELEASE_FLAGS = $(WARN) $(OPT) -O2
-COMPILE = $(CC) $(RELEASE_FLAGS) -gdwarf-5 \
+RELEASE_FLAGS = $(WARN) $(CFLAGS) -ffile-prefix-map==. -gdwarf-5 -fdebug-prefix-map=$(shell pwd)=.
+COMPILE = $(CC) $(RELEASE_FLAGS) \
    -static-pie -nostdinc \
    -I/usr/lib/musl/include \
    -B/usr/lib/musl/lib \

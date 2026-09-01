@@ -16,7 +16,6 @@ sha256sums=('SKIP')
 changelog=changelog.txt
 
 build() {
-   echo "srcdir $srcdir"
    make BIN="$srcdir/bin" PREFIX=/usr
 }
 
@@ -29,6 +28,6 @@ check() {
 }
 
 package() {
-   make install OBJDIR="$pkgdir" DESTDIR="$pkgdir" #-D bin/$pkgname "$pkgdir/usr/bin/$pkgname"
+   make install BIN="$srcdir/bin" DESTDIR="$pkgdir" PREFIX=/usr
 }
 

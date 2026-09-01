@@ -49,8 +49,9 @@ awk -v RS='^$' -v ORS='' "$localSourceSubst" package/PKGBUILD > $dest/PKGBUILD
 
 #3. Actually build the package 
 (cd $dest \
-   && makepkg \
+   && /usr/bin/makepkg \
    && /usr/bin/rm tarball.tar \
-   && awk -v RS='^$' -v ORS='' "$globalSourceSubst" "$original/package/PKGBUILD" > $dest/PKGBUILD \
-   && echo "Version $vers Arch package built in $dest" \
+   && /usr/bin/awk -v RS='^$' -v ORS='' "$globalSourceSubst" "$original/package/PKGBUILD" > \
+      $dest/PKGBUILD \
+   && echo "Arch package for version $vers built in $dest" \
    || echo "ERROR")
