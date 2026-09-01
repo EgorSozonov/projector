@@ -580,7 +580,7 @@ openTemplate(Text fName, Arena* a) {
    FILE *template = fopen(fName.c, "r");
    if (!template) {
       print("Template file not found!");
-      print("%s", fName);
+      print("%s", fName.c);
       return empty;
    }
 
