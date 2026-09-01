@@ -32,10 +32,8 @@ WARN=-Werror=return-type -Wunused-variable -Wshadow -Wfatal-errors \
     -Werror=implicit-function-declaration -Werror=incompatible-pointer-types \
     -Wno-discarded-qualifiers \
     -Werror=int-conversion -fstrict-flex-arrays=3
-SANITIZE=-fsanitize=address # include it occasionally
 CFLAGS ?= -O2 -march=native
-
-APP=projer
+SANITIZE=-fsanitize=address #include it occasionally
 
 RELEASE_FLAGS = $(WARN) $(CFLAGS) -ffile-prefix-map==. -gdwarf-5 -fdebug-prefix-map=$(shell pwd)=.
 COMPILE = $(CC) $(RELEASE_FLAGS) \
@@ -46,6 +44,8 @@ COMPILE = $(CC) $(RELEASE_FLAGS) \
 
 #}}}
 #{{{ Commands
+
+APP=projer
 
 $(BIN):
 / mkdir -p $(BIN)

@@ -21,8 +21,7 @@ dest="$packDir/$app-$vers"
 
 #1. Generate the source tarball at that specific version
 theTarball=$dest/tarball.tar
-#git -c core.abbrev=no -C "$pwd" archive --format tar "$vers" > $theTarball
-git -c core.abbrev=no -C "$pwd" archive --format tar HEAD > $theTarball
+git -c core.abbrev=no -C "$pwd" archive --format tar "$vers" > $theTarball
 checksum=$(sha256sum $theTarball | awk '{print $1}')
 
 #2. We use a PKGBUILD with the local source to build the package, and generate a PKGBUILD

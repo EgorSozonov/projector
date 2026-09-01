@@ -4,14 +4,14 @@
 pkgname=projer
 pkgver=_
 pkgrel=1
-pkgdesc='Project generation tool (from templates)' 
+pkgdesc='Template-based project generation tool' 
 arch=(x86_64)
-url='https://github.com/EgorSozonov/projector'
+url='https://github.com/EgorSozonov/$pkgname'
 license=(BSD-3-Clause)
 depends=() 
 makedepends=(git musl)
-source=(git+https://github.com/EgorSozonov/projector#tag=$pkgver)
-options=(!debug !strip)
+source=(git+https://github.com/EgorSozonov/$pkgname#tag=$pkgver)
+options=(!strip)
 sha256sums=('SKIP')
 changelog=changelog.txt
 
